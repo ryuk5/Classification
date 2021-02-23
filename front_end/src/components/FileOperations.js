@@ -42,6 +42,7 @@ const FileOperations = (props) => {
                     <option value="happy">Happy</option>
                     <option value="sad">Sad</option>
                     <option value="angry">Angry</option>
+                    <option value="sleepy">sleepy</option>
                 </select>
 
                 <div className="row g-3 align-items-center audio-wrapper">

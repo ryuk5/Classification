@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 import os
 import shutil
+from pathlib import Path
 
 # Initiate the app
 app = Flask(__name__)
@@ -12,7 +13,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/app.db'
 
 db = SQLAlchemy(app)
 
-# Defining our Models (ta7te él db)
+# Defining our Models
 class Data(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     file_path = db.Column(db.Text, nullable=False)
@@ -46,6 +47,21 @@ def create():
     db.session.commit()
 
     return {'201': 'file inserted successfully'}
+
+@app.route('/api/hidden/mass_create')
+def mass_create():
+    cwd = Path.cwd()
+    root = Path.joinpath(cwd.parent, 'front_end', 'src', 'files')
+    # print(root)
+    for child in root.iterdir():
+        if child.is_file():
+            print(child)
+            data = Data(file_path=child.name)
+            db.session.add(data)
+
+    db.session.commit()
+
+    return {'201': 'files init successfully'}
 
 @app.route('/api/data/classify', methods=['POST'])
 def classify():
