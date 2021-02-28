@@ -3,6 +3,10 @@ export const ADD_DATA = 'ADD_DATA'
 export const DELETE_DATA = 'DELETE_DATA'
 export const CLASSIFY_DATA = 'CLASSIFY_DATA'
 export const LOADING_DATA = 'LOADING_DATA'
+export const GENERATE_PLOT = 'GENERATE_PLOT'
+export const PLOT_GENERATED = 'PLOT_GENERATED'
+export const GENERATE_AUDIO_DATA = 'GENERATE_AUDIO_DATA'
+export const CLEAR_DATA_GENERATION = 'CLEAR_DATA_GENERATION'
 
 /**  Error Types */
 export const GET_ERRORS = 'GET_ERRORS';

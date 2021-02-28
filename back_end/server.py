@@ -4,7 +4,12 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 import shutil
 from pathlib import Path
+import time
 
+
+import matplotlib.pyplot as plt
+import librosa.display
+import librosa
 # Initiate the app
 app = Flask(__name__)
 
@@ -62,6 +67,42 @@ def mass_create():
     db.session.commit()
 
     return {'201': 'files init successfully'}
+
+@app.route('/api/generate_plot', methods=['POST'])
+def generate_plot():
+    try:
+        request_data = json.loads(request.data)
+        file_path = request_data['file_path']
+        
+        # Generate plots
+        cwd = Path.cwd()
+        destination_folder = Path.joinpath(cwd.parent, 'front_end', 'src', 'img')
+        audio_data = Path.joinpath(cwd.parent, 'front_end', 'src', 'files', file_path)
+        x , sr = librosa.load(audio_data)
+
+        # t7ather fél figure
+        plt.figure(figsize=(14, 5))
+        # affichage
+        librosa.display.waveplot(x, sr=sr)
+        plt.savefig(Path.joinpath(destination_folder, 'waveplot.png'))
+
+        # Fourier
+        X = librosa.stft(x)
+        Xdb = librosa.amplitude_to_db(abs(X))
+
+        # t7ather fél fig 2
+        plt.figure(figsize=(14, 5))
+
+        # affichge 2
+        librosa.display.specshow(Xdb, sr=sr, x_axis='time', y_axis='log')
+
+        plt.colorbar()
+
+        plt.savefig(Path.joinpath(destination_folder, 'spectogram.png'))
+
+        return { '201': 'Plots generated successfully' }
+    except Exception as error:
+        print(error)
 
 @app.route('/api/data/classify', methods=['POST'])
 def classify():
