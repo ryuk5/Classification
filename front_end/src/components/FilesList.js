@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getData, addData, generateAudioData, clearGeneratedData } from '../actions/dataActions'
+import { getData, addData, generateAudioData, clearGeneratedData, deleteFromDB } from '../actions/dataActions'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { useHistory } from "react-router-dom";
@@ -11,6 +11,10 @@ const FilesList = () => {
 
     const generatePlot = (file) => {
         history.push(`/${file.id}`);
+    }
+
+    const handleDeleteFromDB = (file) => {
+        dispatch(deleteFromDB(file))
     }
 
     useEffect(() => {
@@ -25,6 +29,7 @@ const FilesList = () => {
                 <h5 className="card-title">{elt.file_path}</h5>
                 <p className="card-text">To classify your file pleas click bellow.</p>
                 <button type="button" onClick={() => generatePlot(elt)} className="btn btn-primary">Click</button>
+                <button type="button" onClick={() => handleDeleteFromDB(elt)} className="ml-4 btn btn-danger">Delete</button>
             </div>
         </div>
     ))

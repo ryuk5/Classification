@@ -71,3 +71,11 @@ export const generateAudioData = () => dispatch => {
 export const clearGeneratedData = () => ({
     type: CLEAR_DATA_GENERATION
 })
+
+export const deleteFromDB = (file) => dispatch => {
+    axios.post('/api/data/delete_from_db', file)
+    .then(res => {
+        console.log("Deleted From Db")
+    })
+    .catch(err => dispatch(returnErrors(err.response.data, err.response.status)))
+}

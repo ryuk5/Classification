@@ -103,6 +103,7 @@ def generate_plot():
         return { '201': 'Plots generated successfully' }
     except Exception as error:
         print(error)
+        return { '500': 'Server Error' }
 
 @app.route('/api/data/classify', methods=['POST'])
 def classify():
@@ -127,6 +128,14 @@ def delete(id):
     file = request_data['file_path']
     os.remove(f'../front_end/src/files/{file}')
     return { '204': 'Deleted Successfully' }
+
+@app.route('/api/data/delete_from_db', methods=['POST'])
+def delete_from_db():
+    request_data = json.loads(request.data)
+    Data.query.filter_by(id=request_data['id']).delete()
+    db.session.commit()
+
+    return { '201': 'Deleted Successfully' }
 
 
 if __name__ == '__main__':
